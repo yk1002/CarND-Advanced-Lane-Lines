@@ -81,7 +81,7 @@ Here is how the algorithm works:
 
 (Below I describe how the algorithm detects left lane pixels. Exactly the same steps can be used for the right lane pixels.)
 
-1. Record all non-zero pixels (pixels in red in the picture below) that are inside the green rectangle at the bottom (see the picture below). The width of the rectangle is reasonably pre-set as 200 (`=margin*2`) and the height as `1/9` of the total height of the image.
+1. Record all non-zero pixels (pixels in red in the image below) that are inside the green rectangle at the bottom (see the image below). The width of the rectangle is reasonably pre-set as 200 (`=margin*2`) and the height as `1/9` of the total height of the image.
 1. If more than 50 pixels are found in the rectangle, move it to the left or right in such a way that the center of the rectangle is aligned to the mean X coordinate of those pixels.
 1. Move the rectangle up by `1/9` of the height of the image and repeat the process until green boxes cover the entire height of the image.
 
@@ -93,7 +93,7 @@ leftx # x-coordinates of all pixels on the left lane
 left_fit = np.polyfit(lefty, leftx, 2)
 ```
 
-And do the same for the right lane pixels.
+And do the same for the right lane pixels. The fitted polynomials are shown as yellow curves in the image below.
 
 <img src="output_images/lane-pixels-fitted.png">
 
