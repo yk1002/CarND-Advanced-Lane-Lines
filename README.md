@@ -31,7 +31,7 @@ I then used the output `obj_points` and `img_points` to compute the camera calib
 
 #### 1. An example of a distortion-corrected image.
 
-Here is an example that shows how an original images changes when the aforementioned undistortion correction is applied.
+Here is an example that shows how an image changes when the aforementioned undistortion correction is applied.
 <img src="output_images/pipeline_undistorted.png">
 
 #### 2. How and where in my code I used color transforms, gradients or other methods to create a thresholded binary image.
@@ -70,19 +70,19 @@ I verified that the perspective transform was working as expected by drawing the
 
 #### 4. How and where in my code lane-line pixels are identified and a polynomial is fit.
 
-The function `detect_lanes()` in [`detect_lanes.py`](./detect_lanes.py) implements an algorithm that detects left and right lane pixels.
+The function `detect_lane_pixels()` in [`detect_lanes.py`](./detect_lanes.py) implements an algorithm that detects left and right lane pixels in a perspecfive transformed image.
 
 Here is how the algorithm works:
 
 1. Create a histogram that represents a number of non-zero pixels on each line `x=k` for `k = {0, 1, ... image_width-1}` taking into account only pixels in the lower half of the image.
-1. Choose sensible values for the min and max values for the X-axis, `left_begin` and `right_end`. They effectively form a trapezoidal region of interest on the original image.
+1. Set sensible values for the min and max values for the X-axis, `left_begin` and `right_end`. They effectively form a trapezoidal region of interest on the original image.
 1. Find `x in {left_begin, ...  midpoint-1}` that has the largest number of non-zero pixels. This is the initial value for `leftx_current` for the left lane.
 1. Find `x in {midpoint,...right_end-1}` that has the largest number of non-zero pixels. This is the initial value for `rightx_current` for the right lane.
 
 (Below I describe how the algorithm detects left lane pixels. Exactly the same steps can be used for the right lane pixels.)
 
-1. Record all non-zero pixels (pixels in red in the picture below) inside the green rectangle at the bottom (see the picture below). The width of the rectangle is reasonably pre-selected as 200 (`=margin*2`) and the height of it as `1/9` of the total height of the image.
-1. If more than 50 pixels are found in the box, move the rectangle to the left or right in such a way that the center of the box is aligned to the mean X coordinate of those pixels.
+1. Record all non-zero pixels (pixels in red in the picture below) that are inside the green rectangle at the bottom (see the picture below). The width of the rectangle is reasonably pre-set as 200 (`=margin*2`) and the height as `1/9` of the total height of the image.
+1. If more than 50 pixels are found in the rectangle, move it to the left or right in such a way that the center of the rectangle is aligned to the mean X coordinate of those pixels.
 1. Move the rectangle up by `1/9` of the height of the image and repeat the process until green boxes cover the entire height of the image.
 
 Once all left lane pixels are found, use `numpy.polyfit()` to find a quadratic polynomial that best fits them, like this:
@@ -118,7 +118,7 @@ The position of the vehicle with respect to center is calculated as follows:
 #### 6. An example image with an identified lane area.
 <img src="output_images/with_lane_superimposed.png">
 
-The code to process an entire video is implemented in [process_video.py](./process_video.py). To add an identified lane to a video, call the script like this:
+To add an identified lane to a video, run [process_video.py](./process_video.py) like this:
 ```bash
 $ ./proces_video.py project_video.mp4 
 ```
