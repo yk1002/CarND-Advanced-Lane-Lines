@@ -135,7 +135,7 @@ Here's a [link to my video result](./project_video_with_lane.mp4).
 
 ### Discussion
 
-####Problems and issues I faced in my implementation of this project.
+#### Problems and issues I faced in my implementation of this project.
 
 1. The root of the road separator on the left often caused a significant number of non-zero pixels in binary thresholded images, which caused the lane pixel detection algorithm to mis-identify them as part of the left lane. I solved this by excluding the left-most 5% of a perspective transformed image from consideration. This is justified in that it is equivalent to picking up a trapezoidal region of interest from the original image, much like we did for the P1 lane identification project.
 
