@@ -20,10 +20,13 @@ def superimpose_lane(image, mtx, dist, M, Minv):
 
     # get binary image
     ksize = 9
-    gradx = threshold_binary_image.abs_sobel_rgb_thresh(undist, orient='x', channel='r', sobel_kernel=ksize, thresh=(30, 100))
-    s_channel = threshold_binary_image.hls_threshold(undist, channel='s', thresh=(170, 255))
-    binary = np.zeros_like(gradx)
-    binary[(gradx == 1) | (s_channel == 1)] = 1
+    gradx_r = threshold_binary_image.abs_sobel_rgb_thresh(undist, orient='x', channel='r', sobel_kernel=ksize, thresh=(30, 100))
+    s_channel = threshold_binary_image.hls_threshold(undist, channel='s', thresh=(170, 250))
+#worked    s_channel = threshold_binary_image.hls_threshold(undist, channel='s', thresh=(170, 255))
+#    gradx_s = threshold_binary_image.abs_sobel_hls_thresh(undist, orient='x', channel='s', sobel_kernel=ksize, thresh=(30, 100))
+#    s_channel = threshold_binary_image.hls_threshold(undist, channel='s', thresh=(170, 250))
+    binary = np.zeros_like(gradx_r)
+    binary[(gradx_r == 1) | (s_channel == 1)] = 1
 
     # perspective_transform
     binary_warped = cv2.warpPerspective(binary, M, dsize=(binary.shape[1], binary.shape[0]), flags=cv2.INTER_LINEAR)

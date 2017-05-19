@@ -31,7 +31,7 @@ if __name__ == '__main__':
     M, Minv = getPerspectiveTransformMatrix()
 
     input_path = sys.argv[1]
-    output_path = input_path.replace('.mp4', '_with_lanes.mp4')
+    output_path = input_path.replace('.mp4', '_with_lane.mp4')
 
     def process_image(image):
         return superimpose_lane(image, mtx, dist, M, Minv)

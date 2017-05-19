@@ -22,14 +22,14 @@ if __name__ == '__main__':
 
     for image_path in sys.argv[1:]:
         image = mpimg.imread(image_path)
-        #cv2.polylines(image, [np.int32(src_points)], True, (255,0,0), 2)
+        cv2.polylines(image, [np.int32(src_points)], True, (255,0,0), 2)
         warped = cv2.warpPerspective(image, M, dsize=(image.shape[1], image.shape[0]), flags=cv2.INTER_LINEAR)
 
         if save_result:
             save_index += 1
             scipy.misc.imsave('perspective_transform_out{}.jpg'.format(save_index), warped)
 
-        f, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 6))
+        f, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
         f.tight_layout()
         ax1.imshow(image)
         ax1.set_title('Original image with source points ({})'.format(image_path), fontsize=10)

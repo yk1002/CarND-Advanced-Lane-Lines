@@ -75,7 +75,7 @@ def hls_threshold(img, channel='s', thresh=(170, 255)):
     return binary_output
 
 if __name__ == '__main__':
-    save_result = True
+    save_result = False
     save_index = 0
 
     for image_path in sys.argv[1:]:
@@ -85,31 +85,14 @@ if __name__ == '__main__':
 
         # Choose a Sobel kernel size
         ksize = 9 # Choose a larger odd number to smooth gradient measurements
-#        ksize = 3 # Choose a larger odd number to smooth gradient measurements
 
         # Apply each of the thresholding functions
-#        gradx = abs_sobel_s_thresh(image, orient='x', sobel_kernel=ksize, thresh=(70, 150))
-# goo       gradx = abs_sobel_hls_thresh(image, orient='x', channel='s', sobel_kernel=ksize, thresh=(30, 100))
-        gradx = abs_sobel_rgb_thresh(image, orient='x', channel='r', sobel_kernel=ksize, thresh=(30, 100))
-#good        gradx = abs_sobel_hls_thresh(image, orient='x', channel='s', sobel_kernel=ksize, thresh=(30, 100))
-# best        s_channel = hls_threshold(image, channel='s', thresh=(200, 255))
-        s_channel = hls_threshold(image, channel='s', thresh=(170, 255))
-# good  s_channel = hls_threshold(image, channel='s', thresh=(100, 255))
+        gradx_s = abs_sobel_hls_thresh(image, orient='x', channel='s', sobel_kernel=ksize, thresh=(30, 100))
+        gradx_r = abs_sobel_rgb_thresh(image, orient='x', channel='r', sobel_kernel=ksize, thresh=(30, 100))
+        s_channel = hls_threshold(image, channel='s', thresh=(170, 250))
 
-        l_channel = hls_threshold(image, channel='l', thresh=(170, 255))
-        #    grady = abs_sobel_thresh(image, orient='y', sobel_kernel=ksize, thresh=(70, 150))
-        #    mag_binary = mag_thresh(image, sobel_kernel=ksize, thresh=(0, 255))
-        #    dir_binary = dir_threshold(image, sobel_kernel=ksize, thresh=(0, np.pi/2))
-
-        combined = np.zeros_like(gradx)
-#        combined[(gradx == 1)] = 1
-
-        combined[(gradx == 1) | (s_channel == 1)] = 1
-
-#        combined[(s_channel == 1)] = 1
-#        combined[(gradx == 1)] = 1
-#        combined[(gradx == 1) | (l_channel == 1)] = 1
-        #combined[((gradx == 1) & (grady == 1)) | ((mag_binary == 1) & (dir_binary == 1))] = 1
+        combined = np.zeros_like(gradx_s)
+        combined[(gradx_s == 1) | (s_channel == 1)] = 1
 
         if save_result:
             save_index += 1

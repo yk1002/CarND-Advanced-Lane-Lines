@@ -15,9 +15,12 @@ def detect_lane_pixels(binary_warped, out_img=None):
 
     # Find the peak of the left and right halves of the histogram
     # These will be the starting point for the left and right lines
+    # left_begin and right_end effectively create a trapezoidal area of interest similar to that for Project 1
+    left_begin = int(histogram.shape[0]*0.05)
+    right_end = int(histogram.shape[0]*0.95)
     midpoint = np.int(histogram.shape[0]/2)
-    leftx_base = np.argmax(histogram[:midpoint])
-    rightx_base = np.argmax(histogram[midpoint:]) + midpoint
+    leftx_base = np.argmax(histogram[left_begin:midpoint])
+    rightx_base = np.argmax(histogram[midpoint:right_end]) + midpoint
 
     # Choose the number of sliding windows
     nwindows = 9
@@ -150,8 +153,8 @@ if __name__ == '__main__':
         print('right_fit=', right_fit)
 
         # compute radius of curveture in the real world
-        left_curvrad, right_curverad = radius_of_curveture(leftx, lefty, rightx, righty)
-        print('left curveture={} [m], right curveture={} [m]'.format(left_curvrad, right_curverad))
+        left_curvrad, right_curverad, offset = radius_of_curveture_n_offset(leftx, lefty, rightx, righty, image.shape[1])
+        print('left curveture={} [m], right curveture={} [m], offset={} [m]'.format(left_curvrad, right_curverad, offset))
 
         # Generate x and y values for plotting
         ploty = np.linspace(0, binary_warped.shape[0]-1, binary_warped.shape[0] )
@@ -163,6 +166,7 @@ if __name__ == '__main__':
         plt.plot(right_fitx, ploty, color='yellow')
         plt.xlim(0, 1280)
         plt.ylim(720, 0)
+        plt.tight_layout()
 
         plt.show()
 
